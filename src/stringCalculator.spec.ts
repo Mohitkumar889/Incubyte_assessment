@@ -30,4 +30,16 @@ describe('String Calculator', () => {
     expect(add("//;\n1;2")).toBe(3);
   });
 
+ //Calling add with a negative number will throw an exception
+  test('should throw an error for negative numbers', () => {
+    expect(() => add("1,-2,3")).toThrow("Negative numbers not allowed: -2");
+  });
+
+  //multiple negative numbers, show all of them in the exception message, separated by commas.
+  
+  test('should show all negative numbers in the error message', () => {
+    expect(() => add("1,-2,-3,4")).toThrow("Negative numbers not allowed: -2,-3");
+  });
+  
+
 });
