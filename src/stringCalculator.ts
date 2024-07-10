@@ -3,9 +3,25 @@ export function add(numbers: string): number {
 
   let delimiter = /[\n,]/;
   if (numbers.startsWith("//")) {
-    const parts = numbers.split("\n");
-    delimiter = new RegExp(parts[0].substring(2));
-    numbers = parts[1];
+    if (numbers.startsWith("//[")) {
+      const delimiterMatch = numbers.match(/^\/\/(\[.*?\])\n/);
+      console.log(delimiterMatch,"delimiterMatch");
+      if (delimiterMatch) {
+        
+        const delimiterPart = delimiterMatch[1];
+        const delimiters = delimiterPart.split('][').map(d => d.replace(/[\[\]]/g, ''));
+        console.log(delimiters,"delimiters");
+        delimiter = new RegExp(delimiters.map(d => d.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'));
+        console.log(delimiter,"delimiter");
+        numbers = numbers.substring(delimiterMatch[0].length);
+      }
+    } else {
+      const delimiterMatch = numbers.match(/^\/\/(.)\n/);
+      if (delimiterMatch) {
+        delimiter = new RegExp(delimiterMatch[1].replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+        numbers = numbers.substring(4); 
+      }
+    }
   }
 
   const numArray = numbers.split(delimiter).map(num => parseInt(num, 10));
