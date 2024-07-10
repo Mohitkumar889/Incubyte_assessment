@@ -19,5 +19,9 @@ describe('String Calculator', () => {
     expect(add("1,2,3,4")).toBe(10);
   });
 
+ //  Allow the add method to handle new lines between numbers (instead of commas). ("1\n2,3" should return 6)
+  test('should handle new lines between numbers', () => {
+    expect(add("1\n2,3")).toBe(6);
+  });
 
 });
